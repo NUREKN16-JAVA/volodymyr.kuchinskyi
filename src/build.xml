@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Oct 18, 2018 10:13:57 AM                                                        
+
+     project    
+     description
+                   
+     vladimir                                                                
+     ====================================================================== -->
+<project name="user-management" basedir="." default="compile">
+    <description>
+    	description
+    </description>
+	
+	<property name="build-dir" value="${basedir}/bin" />
+	<property name="main-java-dir" value="${basedir}/main/java" />
+	<property name="lib-dir" value="${basedir}/lib" />
+
+    <target name="compile" depends="init">
+        <javac srcdir="${main-java-dir}" destdir="${build-dir}">
+        	<classpath>
+        		<fileset dir="${lib-dir}" />
+        	</classpath>
+        </javac>
+    </target>
+
+    <target name="clean">
+    	<delete dir="${build-dir}" failonerror="no" />
+    </target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build-dir}"/>
+	</target>
+</project>
