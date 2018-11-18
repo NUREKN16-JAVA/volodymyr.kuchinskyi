@@ -2,8 +2,7 @@ package ua.nure.kn.kuchinskiy.usermanagement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Calendar;
-
+import java.time.LocalDate;
 import org.junit.After;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +24,45 @@ class TestUser {
 	public void tearDown() throws Exception {}
 	
 	@Test void testGetAge( ) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(YEAR_OF_BIRTH, MONTH_OF_BIRTH, DAY_OF_BIRTH);
-		user.setDateOfBirth(calendar.getTime());
+		LocalDate dateOfBirth = LocalDate.of(YEAR_OF_BIRTH, MONTH_OF_BIRTH, DAY_OF_BIRTH);
+		user.setDateOfBirth(dateOfBirth);
 		assertEquals(AGE, user.getAge());
 	}
+	
+	// In case if current year is a Birth Year
+	@Test void testGetAgeForCurrentYearBirth() {
+		LocalDate dateOfBirth = LocalDate.of(2018, 10, 24);
+		user.setDateOfBirth(dateOfBirth);
+		assertEquals(0, user.getAge());
+	}
+	
+	// In case if Birth Year is year ago
+	@Test void testGetAgeYearAgo() {
+		LocalDate dateOfBirth = LocalDate.now().minusYears(1);
+		user.setDateOfBirth(dateOfBirth);
+		assertEquals(1, user.getAge());
+	}
+	
+	// In case if birthday was month ago
+	@Test void testGetAgeMonthBefore() {
+		LocalDate dateOfBirth = LocalDate.now().minusMonths(1);
+		user.setDateOfBirth(dateOfBirth);
+		assertEquals(0, user.getAge());
+	}
+	
+	// In case if birthday was year after YEAR_OF_BIRTH constant
+	@Test void testGetAgeInYearAfter() {
+		LocalDate dateOfBirth = LocalDate.of(YEAR_OF_BIRTH + 1, MONTH_OF_BIRTH, DAY_OF_BIRTH);
+		user.setDateOfBirth(dateOfBirth);
+		assertEquals(AGE - 1, user.getAge());
+	}
+	
+	// In case if birthday was year after YEAR_OF_BIRTH constant
+		@Test void testGetAgeInYearBefore() {
+			LocalDate dateOfBirth = LocalDate.of(YEAR_OF_BIRTH - 1, MONTH_OF_BIRTH, DAY_OF_BIRTH);
+			user.setDateOfBirth(dateOfBirth);
+			assertEquals(AGE + 1, user.getAge());
+		}
 	
 	@Test void getFullName() {
 		user.setFirstName(FIRST_NAME);
