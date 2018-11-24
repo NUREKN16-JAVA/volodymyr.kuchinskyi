@@ -2,10 +2,7 @@ package ua.nure.kn.kuchinskiy.usermanagement.db;
 
 import ua.nure.kn.kuchinskiy.usermanagement.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 import java.util.Collection;
 
 public class HsqldbUserDao implements UserDao {
@@ -28,6 +25,11 @@ public class HsqldbUserDao implements UserDao {
             int n  = statement.executeUpdate();
             if (n != 1) {
                 throw new DatabaseException("Number of the inserted rows: " + n);
+            }
+            CallableStatement callableStatement = connection.prepareCall("call IDENTITY()");
+            ResultSet keys = callableStatement.executeQuery();
+            if (keys.next()) {
+                user.setId(new Long(keys.getLong(1)));
             }
         } catch (SQLException e) {
             throw new DatabaseException(e);
