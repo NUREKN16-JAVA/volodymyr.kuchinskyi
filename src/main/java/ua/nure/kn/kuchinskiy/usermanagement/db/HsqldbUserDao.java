@@ -2,10 +2,15 @@ package ua.nure.kn.kuchinskiy.usermanagement.db;
 
 import ua.nure.kn.kuchinskiy.usermanagement.User;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Date;
 import java.util.Collection;
 
 public class HsqldbUserDao implements UserDao {
 
+    private static final String INSERT_QUERY = "INSERT INTO users (firstName, lastName, dateOfBirth) VALUES (?, ?, ?)";
     private ConnectionFactory connectionFactory;
 
     public HsqldbUserDao(ConnectionFactory connectionFactory) {
@@ -14,6 +19,19 @@ public class HsqldbUserDao implements UserDao {
 
     @Override
     public User create(User user) throws DatabaseException {
+        Connection connection = connectionFactory.createConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setDate(3, new Date(user.getDateOfBirth().toEpochDay()));
+            int n  = statement.executeUpdate();
+            if (n != 1) {
+                throw new DatabaseException("Number of the inserted rows: " + n);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
         return null;
     }
 
