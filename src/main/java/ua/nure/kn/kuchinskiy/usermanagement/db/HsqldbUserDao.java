@@ -31,10 +31,15 @@ public class HsqldbUserDao implements UserDao {
             if (keys.next()) {
                 user.setId(new Long(keys.getLong(1)));
             }
+            keys.close();
+            callableStatement.close();
+            statement.close();
+            return user;
+        } catch (DatabaseException e) {
+            throw e;
         } catch (SQLException e) {
             throw new DatabaseException(e);
         }
-        return null;
     }
 
     @Override
