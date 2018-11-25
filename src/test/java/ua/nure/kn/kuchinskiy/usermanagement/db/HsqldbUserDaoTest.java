@@ -17,7 +17,7 @@ public class HsqldbUserDaoTest extends TestCase {
         dao = new HsqldbUserDao(connectionFactory);
     }
 
-    public void create() {
+    public void testCreate() {
         User user = new User();
         user.setFirstName("Vladimir");
         user.setLastName("Kuchinskiy");
