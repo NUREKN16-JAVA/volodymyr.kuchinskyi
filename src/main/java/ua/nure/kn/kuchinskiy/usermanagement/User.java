@@ -1,24 +1,36 @@
 package ua.nure.kn.kuchinskiy.usermanagement;
 
+import javax.persistence.*;
 import java.time.Period;
 import java.time.LocalDate;
 
+@Entity
+@Table(name="USERS")
 public class User {
+
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="first_name")
     private String firstName;
+
+    @Column(name="last_name")
     private String lastName;
+
+    @Column(name="birthday")
     private LocalDate dateOfBirth;
-    private Long id;
 
     public User() {}
 
-    public User(Long id, String firstName, String lastName, LocalDate dateOfBirth) {
-        this.id = id;
+    public User(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -43,7 +55,7 @@ public class User {
         return Period.between(getDateOfBirth(), todayDate).getYears();
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
