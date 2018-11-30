@@ -11,7 +11,7 @@ public class User {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="first_name")
     private String firstName;
@@ -30,7 +30,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -55,7 +55,7 @@ public class User {
         return Period.between(getDateOfBirth(), todayDate).getYears();
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -66,5 +66,11 @@ public class User {
     public void setLastName(String lastName) { this.lastName = lastName; }
 
     public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+
+    public void clone(User user) {
+        firstName = user.firstName;
+        lastName = user.lastName;
+        dateOfBirth = user.dateOfBirth;
+    }
 }
 
