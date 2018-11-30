@@ -42,4 +42,38 @@ public class ManageUser {
         }
         return userID;
     }
+
+    public static List findAll(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        List users = null;
+        try {
+            tx = session.beginTransaction();
+            users = session.createQuery("FROM User").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return users;
+    }
+
+    public static Long countAll() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        Long count = null;
+        try {
+            tx = session.beginTransaction();
+            count = (Long) session.createQuery("SELECT COUNT(*) FROM User").uniqueResult();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return count;
+    }
 }
