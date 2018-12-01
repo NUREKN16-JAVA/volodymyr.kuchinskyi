@@ -43,4 +43,12 @@ public class ManageUserTest extends TestCase {
         assertNotSame(user.getFullName(), updatedUser.getFullName());
         assertNotSame(user.getAge(), updatedUser.getAge());
     }
+
+    public void testDestroy() {
+        Integer userId = ManageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
+        Long countBefore = ManageUser.countAll();
+        ManageUser.destroy(userId);
+        Long countAfter = ManageUser.countAll();
+        assertTrue(countBefore.intValue() != countAfter.intValue());
+    }
 }
