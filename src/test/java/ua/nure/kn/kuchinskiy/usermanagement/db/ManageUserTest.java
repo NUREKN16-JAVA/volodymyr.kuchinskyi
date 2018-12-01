@@ -19,12 +19,18 @@ public class ManageUserTest extends TestCase {
 
     public void testCreate() {
         User user = new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
-        assertNotNull(ManageUser.create(user));
+        Integer userId = ManageUser.create(user);
+        assertNotNull(userId);
+        ManageUser.destroy(userId);
     }
 
     public void testFindAll() {
+        Integer firstUserId = ManageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
+        Integer secondUserId = ManageUser.create(new User(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_DATE_OF_BIRTH));
         List users = ManageUser.findAll();
         assertEquals(new Long(users.size()), ManageUser.countAll());
+        ManageUser.destroy(firstUserId);
+        ManageUser.destroy(secondUserId);
     }
 
     public void testFind() {
@@ -32,6 +38,7 @@ public class ManageUserTest extends TestCase {
         user.setId(ManageUser.create(user));
         User testedUser = ManageUser.find(user.getId());
         assertEquals(user.getId(), testedUser.getId());
+        ManageUser.destroy(user.getId());
     }
 
     public void testUpdate() {
@@ -42,6 +49,7 @@ public class ManageUserTest extends TestCase {
         updatedUser = ManageUser.find(user.getId());
         assertNotSame(user.getFullName(), updatedUser.getFullName());
         assertNotSame(user.getAge(), updatedUser.getAge());
+        ManageUser.destroy(user.getId());
     }
 
     public void testDestroy() {
