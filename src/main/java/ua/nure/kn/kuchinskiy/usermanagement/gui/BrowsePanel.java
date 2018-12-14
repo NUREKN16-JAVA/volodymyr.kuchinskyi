@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class BrowsePanel extends JPanel implements ActionListener {
     private MainFrame parent;
@@ -39,11 +40,34 @@ public class BrowsePanel extends JPanel implements ActionListener {
         return buttonPanel;
     }
 
+    private JButton getAddButton() {
+        if (addButton == null) {
+            addButton = new JButton();
+            addButton.setText("Add");
+            addButton.setName("addButton");
+            addButton.setActionCommand("add");
+            addButton.addActionListener(this);
+        }
+        return addButton;
+    }
+
+    private JButton getEditButton() {
+        if (editButton == null) {
+            editButton = new JButton();
+            editButton.setText("Edit");
+            editButton.setName("editButton");
+            editButton.setActionCommand("edit");
+            editButton.addActionListener(this);
+        }
+        return editButton;
+    }
+
     private JButton getDetailsButton() {
         if (detailsButton == null) {
             detailsButton = new JButton();
             detailsButton.setText("Details");
             detailsButton.setName("detailsButton");
+            detailsButton.setActionCommand("details");
             detailsButton.addActionListener(this);
         }
         return detailsButton;
@@ -54,29 +78,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
             deleteButton = new JButton();
             deleteButton.setText("Delete");
             deleteButton.setName("deleteButton");
+            deleteButton.setActionCommand("delete");
             deleteButton.addActionListener(this);
         }
         return deleteButton;
-    }
-
-    private JButton getEditButton() {
-        if (editButton == null) {
-            editButton = new JButton();
-            editButton.setText("Edit");
-            editButton.setName("editButton");
-            editButton.addActionListener(this);
-        }
-        return editButton;
-    }
-
-    private JButton getAddButton() {
-        if (addButton == null) {
-            addButton = new JButton();
-            addButton.setText("Add");
-            addButton.setName("addButton");
-            addButton.addActionListener(this);
-        }
-        return addButton;
     }
 
     private Component getTablePanel() {
@@ -90,6 +95,8 @@ public class BrowsePanel extends JPanel implements ActionListener {
         if (userTable == null) {
             userTable = new JTable();
             userTable.setName("userTable");
+            UserTableModel model = new UserTableModel(new ArrayList());
+            userTable.setModel(model);
         }
         return userTable;
     }
