@@ -43,6 +43,17 @@ public class AddPanel extends JPanel implements ActionListener {
         return buttonPanel;
     }
 
+    private JPanel getFieldPanel() {
+        if (fieldPanel == null) {
+            fieldPanel = new JPanel();
+            fieldPanel.setLayout(new GridLayout(3, 2));
+            addLabeledField(fieldPanel, "First Name", getFirstNameField());
+            addLabeledField(fieldPanel, "Last Name", getLastNameField());
+            addLabeledField(fieldPanel, "Date of Birth", getDateOfBirthField());
+        }
+        return fieldPanel;
+    }
+
     private JButton getSubmitButton() {
         if (submitButton == null) {
             submitButton = new JButton();
@@ -63,17 +74,6 @@ public class AddPanel extends JPanel implements ActionListener {
             cancelButton.addActionListener(this);
         }
         return cancelButton;
-    }
-
-    private JPanel getFieldPanel() {
-        if (fieldPanel == null) {
-            fieldPanel = new JPanel();
-            fieldPanel.setLayout(new GridLayout(3, 2));
-            addLabeledField(fieldPanel, "First Name", getFirstNameField());
-            addLabeledField(fieldPanel, "Last Name", getLastNameField());
-            addLabeledField(fieldPanel, "Date of Birth", getDateOfBirthField());
-        }
-        return fieldPanel;
     }
 
     private void addLabeledField(JPanel panel, String labelText, JTextField textField) {
