@@ -1,8 +1,11 @@
 package ua.nure.kn.kuchinskiy.usermanagement.gui;
 
+import java.time.LocalDate;
+
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
+import junit.extensions.jfcunit.eventdata.StringEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
 
 import javax.swing.*;
@@ -48,15 +51,30 @@ public class MainFrameTest extends JFCTestCase {
     }
 
     public void testAddUser() {
+        JTable table = (JTable) find(JTable.class, "userTable");
+        assertEquals(0, table.getRowCount());
+
         JButton addButton = (JButton) find(JButton.class, "addButton");
         getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 
         find(JPanel.class, "addPanel");
 
-        find(JTextField.class, "firstNameField");
-        find(JTextField.class, "lastNameField");
-        find(JTextField.class, "dateOfBirthField");
-        find(JButton.class, "submitButton");
+        JTextField firstNamefield = (JTextField) find(JTextField.class, "firstNameField");
+        JTextField lastNamefield = (JTextField) find(JTextField.class, "lastNameField");
+        JTextField dateOfBirth = (JTextField) find(JTextField.class, "dateOfBirthField");
+        JButton submitButton = (JButton) find(JButton.class, "submitButton");
         find(JButton.class, "cancelButton");
+
+        getHelper().sendString(new StringEventData(this, firstNamefield, "John"));
+        getHelper().sendString(new StringEventData(this, lastNamefield, "Doe"));
+
+        String date = "23-09-1999";
+        getHelper().sendString(new StringEventData(this, dateOfBirth, date));
+
+        getHelper().enterClickAndLeave(new MouseEventData(this, submitButton));
+
+        find(JPanel.class, "browsePanel");
+        table = (JTable) find(JTable.class, "userTable");
+        assertEquals(1, table.getRowCount());
     }
 }
