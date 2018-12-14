@@ -1,7 +1,5 @@
 package ua.nure.kn.kuchinskiy.usermanagement.gui;
 
-import java.time.LocalDate;
-
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
@@ -68,7 +66,7 @@ public class MainFrameTest extends JFCTestCase {
         getHelper().sendString(new StringEventData(this, firstNamefield, "John"));
         getHelper().sendString(new StringEventData(this, lastNamefield, "Doe"));
 
-        String date = "23-09-1999";
+        String date = "1999-09-23";
         getHelper().sendString(new StringEventData(this, dateOfBirth, date));
 
         getHelper().enterClickAndLeave(new MouseEventData(this, submitButton));

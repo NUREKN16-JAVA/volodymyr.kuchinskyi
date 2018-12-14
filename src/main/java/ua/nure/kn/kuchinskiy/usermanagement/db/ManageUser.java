@@ -1,5 +1,6 @@
 package ua.nure.kn.kuchinskiy.usermanagement.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -8,9 +9,13 @@ import org.hibernate.Transaction;
 import ua.nure.kn.kuchinskiy.usermanagement.User;
 
 public class ManageUser {
+    private Session session;
+    public ManageUser() {
+        session = HibernateUtil.getSessionFactory().openSession();
+    }
+
     /* Method to CREATE a user in the database */
-    public static Integer create(User newUser){
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public Integer create(User newUser){
         Transaction tx = null;
         Integer userID = null;
 
@@ -22,15 +27,12 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return userID;
     }
 
     /* Method to UPDATE user */
-    public static void update(Integer userId, User editedUser){
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public void update(Integer userId, User editedUser){
         Transaction tx = null;
 
         try {
@@ -42,14 +44,10 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
-
     }
 
-    public static User find(Integer userId) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public User find(Integer userId) {
         Transaction tx = null;
         User user = null;
         try {
@@ -59,16 +57,13 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return user;
     }
 
-    public static List findAll(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public List findAll(){
         Transaction tx = null;
-        List users = null;
+        List users = new ArrayList();
         try {
             tx = session.beginTransaction();
             users = session.createQuery("FROM User").list();
@@ -76,14 +71,11 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return users;
     }
 
-    public static void destroy(Integer userId) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public void destroy(Integer userId) {
         Transaction tx = null;
 
         try {
@@ -94,13 +86,10 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
-    public static Long countAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public Long countAll() {
         Transaction tx = null;
         Long count = null;
         try {
@@ -110,9 +99,11 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return count;
+    }
+
+    public void finalize() {
+        session.close();
     }
 }

@@ -2,6 +2,7 @@ package ua.nure.kn.kuchinskiy.usermanagement.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import ua.nure.kn.kuchinskiy.usermanagement.db.ManageUser;
 
 public class MainFrame extends JFrame {
     private static final String TITLE = "Managing users";
@@ -36,7 +37,12 @@ public class MainFrame extends JFrame {
         if (browsePanel == null) {
             browsePanel = new BrowsePanel(this);
         }
+        ((BrowsePanel) browsePanel).initTable();
         return browsePanel;
+    }
+
+    public ManageUser getManageUser() {
+        return new ManageUser();
     }
 
     public static void main(String[] args) {

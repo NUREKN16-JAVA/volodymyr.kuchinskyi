@@ -18,45 +18,50 @@ public class ManageUserTest extends TestCase {
     private LocalDate NEW_DATE_OF_BIRTH = LocalDate.of(1998, 1, 30);
 
     public void testCreate() {
+        ManageUser manageUser = new ManageUser();
         User user = new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
-        Integer userId = ManageUser.create(user);
+        Integer userId = manageUser.create(user);
         assertNotNull(userId);
-        ManageUser.destroy(userId);
+        manageUser.destroy(userId);
     }
 
     public void testFindAll() {
-        Integer firstUserId = ManageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
-        Integer secondUserId = ManageUser.create(new User(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_DATE_OF_BIRTH));
-        List users = ManageUser.findAll();
-        assertEquals(new Long(users.size()), ManageUser.countAll());
-        ManageUser.destroy(firstUserId);
-        ManageUser.destroy(secondUserId);
+        ManageUser manageUser = new ManageUser();
+        Integer firstUserId = manageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
+        Integer secondUserId = manageUser.create(new User(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_DATE_OF_BIRTH));
+        List users = manageUser.findAll();
+        assertEquals(new Long(users.size()), manageUser.countAll());
+        manageUser.destroy(firstUserId);
+        manageUser.destroy(secondUserId);
     }
 
     public void testFind() {
         User user = new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
-        user.setId(ManageUser.create(user));
-        User testedUser = ManageUser.find(user.getId());
+        ManageUser manageUser = new ManageUser();
+        user.setId(manageUser.create(user));
+        User testedUser = manageUser.find(user.getId());
         assertEquals(user.getId(), testedUser.getId());
-        ManageUser.destroy(user.getId());
+        manageUser.destroy(user.getId());
     }
 
     public void testUpdate() {
         User user = new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
-        user.setId(ManageUser.create(user));
+        ManageUser manageUser = new ManageUser();
+        user.setId(manageUser.create(user));
         User updatedUser = new User(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_DATE_OF_BIRTH);
-        ManageUser.update(user.getId(), updatedUser);
-        updatedUser = ManageUser.find(user.getId());
+        manageUser.update(user.getId(), updatedUser);
+        updatedUser = manageUser.find(user.getId());
         assertNotSame(user.getFullName(), updatedUser.getFullName());
         assertNotSame(user.getAge(), updatedUser.getAge());
-        ManageUser.destroy(user.getId());
+        manageUser.destroy(user.getId());
     }
 
     public void testDestroy() {
-        Integer userId = ManageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
-        Long countBefore = ManageUser.countAll();
-        ManageUser.destroy(userId);
-        Long countAfter = ManageUser.countAll();
+        ManageUser manageUser = new ManageUser();
+        Integer userId = manageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
+        Long countBefore = manageUser.countAll();
+        manageUser.destroy(userId);
+        Long countAfter = manageUser.countAll();
         assertTrue(countBefore.intValue() != countAfter.intValue());
     }
 }
