@@ -61,7 +61,7 @@ public class ManageUser {
         return user;
     }
 
-    public List findAll(){
+    public List findAll() throws DatabaseException {
         Transaction tx = null;
         List users = new ArrayList();
         try {
@@ -71,6 +71,7 @@ public class ManageUser {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return users;
     }
