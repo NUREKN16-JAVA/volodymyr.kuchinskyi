@@ -23,8 +23,7 @@ public class BrowseServlet extends HttpServlet {
             req.getSession().setAttribute("users", users);
             req.getRequestDispatcher("/browse.jsp").forward(req, resp);
         } catch (DatabaseException e) {
-
-
+            throw new ServletException(e);
         }
 
     }

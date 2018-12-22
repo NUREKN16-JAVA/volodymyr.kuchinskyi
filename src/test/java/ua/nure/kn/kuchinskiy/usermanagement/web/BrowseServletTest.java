@@ -1,6 +1,7 @@
 package ua.nure.kn.kuchinskiy.usermanagement.web;
 
 import ua.nure.kn.kuchinskiy.usermanagement.User;
+import ua.nure.kn.kuchinskiy.usermanagement.db.DatabaseException;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -16,7 +17,11 @@ public class BrowseServletTest extends MockServletTestCase {
     public void testBrowse() {
         User user = new User("Vladimir", "Kuchinskiy", LocalDate.of(1999, 9, 23));
         List list = Collections.singletonList(user);
-        getUserManager().expectAndReturn("findAll", list);
+        try {
+            list = getUserManager().findAll();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
         doGet();
         Collection collection = (Collection) getWebMockObjectFactory().getMockSession().getAttribute("users");
         assertNotNull("Could not find list of users in session", collection);
