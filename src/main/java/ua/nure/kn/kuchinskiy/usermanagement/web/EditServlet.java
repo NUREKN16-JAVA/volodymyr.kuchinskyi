@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class EditServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,30 +25,54 @@ public class EditServlet extends HttpServlet {
     }
 
     private void ok(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUser(req);
+        User user = null;
+        try {
+            user = getUser(req);
+        } catch (ValidationException e) {
+            req.setAttribute("error", e.getMessage());
+            showPage(req, resp);
+        }
         processUser(user.getId(), user);
         req.getRequestDispatcher("/browse").forward(req, resp);
     }
 
-    private void cancel(HttpServletRequest req, HttpServletResponse resp) {
+    private void showPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/edit.jsp").forward(req, resp);
     }
 
-    private void showPage(HttpServletRequest req, HttpServletResponse resp) {
+    private void cancel(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/browse.jsp").forward(req, resp);
     }
 
-    private User getUser(HttpServletRequest req) {
+    private User getUser(HttpServletRequest req) throws ValidationException {
         User user = new User();
         String idStr = req.getParameter("id");
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String dateOfBirth = req.getParameter("dateOfBirth");
 
+        if (firstName == null) {
+            throw new ValidationException("First Name could not be Empty");
+        }
+
+        if (lastName == null) {
+            throw new ValidationException("Last Name could not be Empty");
+        }
+
+        if (dateOfBirth == null) {
+            throw new ValidationException("Date of Birth could not be Empty");
+        }
+
         if (idStr != null) {
             user.setId(new Integer(idStr));
         }
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setDateOfBirth(LocalDate.parse(dateOfBirth));
+        try {
+            user.setDateOfBirth(LocalDate.parse(dateOfBirth));
+        } catch(DateTimeParseException e) {
+            throw new ValidationException("Date Format is incorrect");
+        }
         return null;
     }
 
