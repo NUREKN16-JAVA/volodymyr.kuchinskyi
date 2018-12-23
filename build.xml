@@ -44,6 +44,13 @@
         <copy todir="$(war-lib-dir)">
             <fileset dir="$(lib-dir)">
                 <include name="mysql*.jar"/>
+                <include name="envers/*.jar"/>
+                <include name="for-servlets/*.jar"/>
+                <include name="jpa-metamodel-generator/*.jar"/>
+                <include name="optional/*/*.jar"/>
+                <include name="osgi/*.jar"/>
+                <include name="required/*.jar"/>
+                <include name="spatial/*.jar"/>
                 <include name="jstl*.jar"/>
                 <include name="standard*.jar"/>
             </fileset>
