@@ -1,5 +1,6 @@
 package ua.nure.kn.kuchinskiy.usermanagement.web;
 
+import ua.nure.kn.kuchinskiy.usermanagement.User;
 import ua.nure.kn.kuchinskiy.usermanagement.db.DatabaseException;
 import ua.nure.kn.kuchinskiy.usermanagement.db.ManageUser;
 
@@ -29,6 +30,21 @@ public class BrowseServlet extends HttpServlet {
     }
 
     private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idStr = req.getParameter("id");
+        if (idStr == null || idStr.trim().length() == 0) {
+            req.setAttribute("error", "You must select a user");
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
+        try {
+            ManageUser manageUser = new ManageUser();
+            User user = manageUser.find(new Integer(idStr));
+            req.getSession().setAttribute("user", user);
+        } catch (Exception e) {
+            req.setAttribute("error", "ERROR:" + e.toString());
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+        }
+        req.getRequestDispatcher("/edit").forward(req, resp);
     }
 
     private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

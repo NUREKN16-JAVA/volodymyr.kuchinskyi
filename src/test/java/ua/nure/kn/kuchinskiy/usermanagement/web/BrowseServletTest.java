@@ -27,4 +27,16 @@ public class BrowseServletTest extends MockServletTestCase {
         assertNotNull("Could not find list of users in session", collection);
         assertSame(list, collection);
     }
+
+    public void testEdit() {
+        User user = new User("Vladimir", "Kuchinskiy", LocalDate.of(1999, 9, 23));
+        Integer userId = getUserManager().create(user);
+        addRequestParameter("editButton", "Edit");
+        addRequestParameter("id", userId.toString());
+        doPost();
+        User userInSession = (User) getWebMockObjectFactory().getMockSession().getAttribute("user");
+        assertNotNull("Could not find user in session", user);
+        assertSame(user, userInSession);
+
+    }
 }
