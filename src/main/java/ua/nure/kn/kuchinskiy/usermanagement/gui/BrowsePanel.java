@@ -1,5 +1,7 @@
 package ua.nure.kn.kuchinskiy.usermanagement.gui;
 
+import ua.nure.kn.kuchinskiy.usermanagement.db.DatabaseException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -99,7 +101,12 @@ public class BrowsePanel extends JPanel implements ActionListener {
     }
 
     public void initTable() {
-        UserTableModel model = new UserTableModel(parent.getManageUser().findAll());
+        UserTableModel model = null;
+        try {
+            model = new UserTableModel(parent.getManageUser().findAll());
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
         getUserTable().setModel(model);
     }
 

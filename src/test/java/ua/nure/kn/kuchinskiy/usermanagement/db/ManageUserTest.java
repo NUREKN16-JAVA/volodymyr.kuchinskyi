@@ -29,7 +29,12 @@ public class ManageUserTest extends TestCase {
         ManageUser manageUser = new ManageUser();
         Integer firstUserId = manageUser.create(new User(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH));
         Integer secondUserId = manageUser.create(new User(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_DATE_OF_BIRTH));
-        List users = manageUser.findAll();
+        List users = null;
+        try {
+            users = manageUser.findAll();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
         assertEquals(new Long(users.size()), manageUser.countAll());
         manageUser.destroy(firstUserId);
         manageUser.destroy(secondUserId);
