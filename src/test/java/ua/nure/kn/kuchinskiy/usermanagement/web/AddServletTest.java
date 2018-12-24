@@ -9,7 +9,7 @@ public class AddServletTest extends MockServletTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        createServlet(EditServlet.class);
+        createServlet(AddServlet.class);
     }
 
     public void testAdd() {

@@ -76,7 +76,7 @@ public class EditServlet extends HttpServlet {
         return null;
     }
 
-    private void processUser(Integer id, User user) {
+    protected void processUser(Integer id, User user) {
         ManageUser userManager = new ManageUser();
         userManager.update(id, user);
     }
