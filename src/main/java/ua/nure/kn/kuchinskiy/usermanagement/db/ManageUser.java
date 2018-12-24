@@ -1,9 +1,15 @@
 package ua.nure.kn.kuchinskiy.usermanagement.db;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.nure.kn.kuchinskiy.usermanagement.User;
@@ -101,6 +107,24 @@ public class ManageUser {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public Collection<User> find(String firstName, String lastName) throws DatabaseException {
+        Transaction tx = null;
+        Collection<User> users = new LinkedList<>();
+        try {
+            tx = session.beginTransaction();
+            SQLQuery query = session.createSQLQuery("SELECT id, first_name, last_name, birthday FROM TEST.USERS WHERE first_name = :firstName AND last_name = :lastName");
+            query.setParameter("firstName", firstName);
+            query.setParameter("lastName", lastName);
+            users = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+
+        return users;
     }
 
     public void finalize() {
